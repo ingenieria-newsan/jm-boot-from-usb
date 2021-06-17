@@ -14,6 +14,7 @@ copy /Y .\efiapp\profiles.txt S:\EFI\JMBoot\profiles.txt
 bcdedit /set {bootmgr} path \EFI\JMBoot\bootx64.efi
 bcdedit /set {bootmgr} description "System Image Deploy"
 bcdedit /default {bootmgr}
+bcdedit /set {bootmgr} displaybootmenu no
 bcdedit /displayorder {bootmgr} /addfirst
 
 IF ERRORLEVEL 1 GOTO ERR ELSE echo (JM) Entrada UEFI creada y configurada.
