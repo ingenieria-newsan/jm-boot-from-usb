@@ -1,22 +1,22 @@
 @echo off
 cls
-echo (JM) Iniciando...
+echo (JM) Iniciando ...
 
 :: Montar particion de arranque del disco
+echo (JM) Montando disco de arranque en S: ...
 mountvol S: /s
 
+:: Eliminar archivos de arranque actuales
+echo (JM) Eliminanndo archivos de arranque actuales ...
+DEL /F /S /Q S:\EFI\*.*
+
 :: Crear carpeta y copiar archivos de la aplicacion shell.efi
-IF NOT EXIST S:\EFI\JMBoot mkdir S:\EFI\JMBoot
-copy /Y .\efiapp\uefi_shell_min.efi S:\EFI\JMBoot\bootx64.efi
-copy /Y .\efiapp\profiles.txt S:\EFI\JMBoot\profiles.txt
+echo (JM) Copiando archivos de arranque nuevos ...
+IF NOT EXIST S:\EFI\Boot mkdir S:\EFI\Boot
+copy /Y .\efiapp\uefi_shell_min.efi S:\EFI\Boot\bootx64.efi
+copy /Y .\efiapp\profiles.txt S:\EFI\Boot\profiles.txt
 
-:: Creo y configuro una nueva entrada UEFI
-bcdedit /set {bootmgr} path \EFI\JMBoot\bootx64.efi
-bcdedit /set {bootmgr} description "System Image Deploy"
-bcdedit /set {bootmgr} displaybootmenu no
-bcdedit /displayorder {bootmgr} /addfirst
-
-IF ERRORLEVEL 1 GOTO ERR ELSE echo (JM) Entrada UEFI creada y configurada.
+IF ERRORLEVEL 1 GOTO ERR ELSE echo (JM) Validando ...
 
 :: Si todo fue OK
 :OK
